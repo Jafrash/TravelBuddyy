@@ -1,8 +1,10 @@
-import { pgTable, text, serial, integer, boolean, json, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, json, timestamp, pgEnum } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-// User roles
+// Enums
+export const budgetEnum = pgEnum('budget', ['low', 'medium', 'high']);
+
 export enum UserRole {
   TRAVELER = "traveler",
   AGENT = "agent"
@@ -62,9 +64,9 @@ export const tripPreferences = pgTable("trip_preferences", {
   id: serial("id").primaryKey(),
   travelerId: integer("traveler_id").notNull(),
   destination: text("destination").notNull(),
-  startDate: text("start_date").notNull(),
-  endDate: text("end_date").notNull(),
-  budget: text("budget").notNull(),
+  startDate: timestamp("start_date").notNull(),
+  endDate: timestamp("end_date").notNull(),
+  budget: budgetEnum("budget").notNull(),
   travelStyles: text("travel_styles").array().notNull(),
   additionalInfo: text("additional_info"),
   createdAt: timestamp("created_at").defaultNow(),
@@ -77,7 +79,7 @@ export const insertTripPreferenceSchema = createInsertSchema(tripPreferences).pi
   endDate: true,
   budget: true,
   travelStyles: true,
-  additionalInfo: true,
+  additionalInfo: true
 });
 
 // Itinerary schema
@@ -126,18 +128,16 @@ export const insertMessageSchema = createInsertSchema(messages).pick({
 // Reviews schema
 export const reviews = pgTable("reviews", {
   id: serial("id").primaryKey(),
-  travelerId: integer("traveler_id").notNull(),
+  userId: integer("user_id").notNull(),
   agentId: integer("agent_id").notNull(),
-  itineraryId: integer("itinerary_id").notNull(),
   rating: integer("rating").notNull(),
   comment: text("comment"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
 export const insertReviewSchema = createInsertSchema(reviews).pick({
-  travelerId: true,
+  userId: true,
   agentId: true,
-  itineraryId: true,
   rating: true,
   comment: true,
 });

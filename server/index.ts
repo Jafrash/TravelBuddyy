@@ -3,6 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import aiRoutes from './routes/ai.routes';
 
 // Debug log for server startup
 console.log('Starting server process... Using port 5000');
@@ -16,8 +17,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Simple API health check
 app.get('/health', (req, res) => {
-  res.send('OK - Server is healthy');
+  res.json({ status: 'ok', message: 'Server is healthy' });
 });
+
+// AI Routes
+app.use(aiRoutes);
 
 app.use((req, res, next) => {
   const start = Date.now();

@@ -24,6 +24,7 @@ import AgentDashboardPage from "@/pages/agent-dashboard-page";
 import ItineraryPage from "@/pages/itinerary-page";
 import MessagingPage from "@/pages/messaging-page";
 import ExplorePlacesPage from "@/pages/explore-places-page";
+import AIItineraryPage from "@/pages/ai-itinerary-page";
 
 function Router() {
   return (
@@ -35,6 +36,7 @@ function Router() {
       <Route path="/agents" component={AgentsPage} />
       <Route path="/agents/:id" component={AgentDetailsPage} />
       <Route path="/explore" component={ExplorePlacesPage} />
+      <Route path="/ai-itinerary" component={AIItineraryPage} />
       <ProtectedRoute path="/dashboard/traveler" component={TravelerDashboardPage} />
       <ProtectedRoute path="/dashboard/agent" component={AgentDashboardPage} />
       <ProtectedRoute path="/itinerary/:id" component={ItineraryPage} />

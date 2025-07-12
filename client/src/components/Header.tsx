@@ -56,6 +56,9 @@ const Header = () => {
             <Link href="/explore" className={`font-medium ${location === "/explore" ? "text-primary" : "text-neutral-dark hover:text-primary"} transition-colors`}>
               Explore Places
             </Link>
+            <Link href="/ai-itinerary" className={`font-medium ${location === "/ai-itinerary" ? "text-primary" : "text-neutral-dark hover:text-primary"} transition-colors`}>
+              AI Itinerary
+            </Link>
             {/* Only show "Find Agents" link for travelers or non-logged in users */}
             {(!user || user.role === "traveler") && (
               <Link href="/agents" className={`font-medium ${location === "/agents" ? "text-primary" : "text-neutral-dark hover:text-primary"} transition-colors`}>

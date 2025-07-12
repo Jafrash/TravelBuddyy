@@ -1,7 +1,11 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import { fileURLToPath } from 'url';
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Use an async function to handle dynamic imports
 export default defineConfig(async () => {
@@ -20,12 +24,12 @@ export default defineConfig(async () => {
     plugins,
     resolve: {
       alias: {
-        "@": path.resolve(import.meta.dirname, "client", "src"),
-        "@shared": path.resolve(import.meta.dirname, "shared"),
-        "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+        "@": path.resolve(__dirname, "./client/src"),
+        "@shared": path.resolve(__dirname, "./shared"),
+        "@assets": path.resolve(__dirname, "./attached_assets"),
       },
     },
-    root: path.resolve(import.meta.dirname, "client"),
+    root: "./client",
     server: {
       port: 5173,
       proxy: {
@@ -33,12 +37,12 @@ export default defineConfig(async () => {
           target: 'http://localhost:5000',
           changeOrigin: true,
           secure: false,
-          ws: false, // Disable WebSocket proxying since we're not using it
+          ws: false,
         },
       },
     },
     build: {
-      outDir: path.resolve(import.meta.dirname, "dist/public"),
+      outDir: path.resolve(__dirname, "dist/public"),
       emptyOutDir: true,
     },
   };

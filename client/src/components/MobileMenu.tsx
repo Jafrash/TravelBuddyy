@@ -37,6 +37,16 @@ const MobileMenu = ({ isOpen, onClose, user, onLogout }: MobileMenuProps) => {
                 Home
               </Link>
             </li>
+            <li>
+              <Link href="/explore" className="block py-2 text-lg font-medium text-neutral-dark hover:text-primary transition-colors" onClick={onClose}>
+                Explore Places
+              </Link>
+            </li>
+            <li>
+              <Link href="/ai-itinerary" className="block py-2 text-lg font-medium text-neutral-dark hover:text-primary transition-colors" onClick={onClose}>
+                AI Itinerary
+              </Link>
+            </li>
             {/* Only show "Find Agents" for travelers or non-logged in users */}
             {(!user || user.role === "traveler") && (
               <li>

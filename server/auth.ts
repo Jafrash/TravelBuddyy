@@ -6,6 +6,7 @@ import { scrypt, randomBytes, timingSafeEqual } from "crypto";
 import { promisify } from "util";
 import { storage } from "./storage";
 import { User as SelectUser } from "@shared/schema";
+import { getAuthenticatedUser } from "./middleware/auth";
 
 declare global {
   namespace Express {
@@ -101,7 +102,11 @@ export function setupAuth(app: Express) {
 
   app.post("/api/login", passport.authenticate("local"), (req, res) => {
     // Filter out password before sending response
-    const { password, ...safeUser } = req.user as SelectUser;
+    const user = getAuthenticatedUser<SelectUser>(req);
+    if (!user) {
+      return res.status(401).json({ error: 'Authentication failed' });
+    }
+    const { password, ...safeUser } = user;
     res.status(200).json(safeUser);
   });
 
@@ -113,9 +118,12 @@ export function setupAuth(app: Express) {
   });
 
   app.get("/api/user", (req, res) => {
-    if (!req.isAuthenticated()) return res.sendStatus(401);
+    const user = getAuthenticatedUser<SelectUser>(req);
+    if (!user) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
     // Filter out password before sending response
-    const { password, ...safeUser } = req.user as SelectUser;
+    const { password, ...safeUser } = user;
     res.json(safeUser);
   });
 }
